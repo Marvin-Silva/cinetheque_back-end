@@ -13,6 +13,11 @@ namespace cinetheque.Services
             new UserDAO().InsertUser(user);
         }
 
+        public UserInfo getUserInfo(int id)
+        {
+            return new UserDAO().SelectUserInfo(id);
+        }
+
         public bool login(User user)
         {
             return new UserDAO().SelectUser(user);

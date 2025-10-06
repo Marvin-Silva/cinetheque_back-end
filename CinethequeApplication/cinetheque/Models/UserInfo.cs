@@ -20,9 +20,10 @@ namespace cinetheque.Models
         public int getUserId{ get; set; }
 
 
-        UserInfo() { }
-        UserInfo(string name, string firstName, string adress, int user_id)
+        public UserInfo() { }
+        public UserInfo(int id, string name, string firstName, string adress, int user_id)
         {
+            getId = id;
             getUserName = name;
             getUserFirstName = firstName;
             getUserAdress = adress;

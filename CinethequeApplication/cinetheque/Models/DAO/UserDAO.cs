@@ -8,6 +8,43 @@ namespace cinetheque.Models
 {
     public class UserDAO
     {
+
+        public UserInfo SelectUserInfo(int id)
+        {
+            UserInfo user = new UserInfo();
+            string connectionString = @"Data Source=LAPTOP-R6OUBGEG;
+                                Initial Catalog=cinethequeDB;
+                                User ID=Marvin;
+                                Password=Soleil.123;
+                                Encrypt=True;
+                                TrustServerCertificate=True;";
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+
+            string sql = "SELECT * FROM utilisateur_infos WHERE id='"+id+"';";
+            SqlCommand command = new SqlCommand(sql, connection);
+
+            SqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                int idInfo = Convert.ToInt32(reader.GetValue(0));
+                string nom = reader.GetString(1);
+                string prenom = reader.GetString(2);
+                string adresse = reader.GetString(3);
+                int utilisateur_id = Convert.ToInt32(reader.GetValue(4));
+
+                user = new UserInfo(idInfo, nom, prenom, adresse, utilisateur_id);
+                return user;
+            }
+
+            reader.Close();
+            connection.Close();
+            return user;
+        }
+
+
         public bool SelectUser(User user)
         {
             string connectionString = @"Data Source=LAPTOP-R6OUBGEG;
