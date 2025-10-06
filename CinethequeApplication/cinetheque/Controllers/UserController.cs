@@ -22,7 +22,6 @@ namespace cinetheque.Controllers
         [HttpPost]
         public void CreateUser([FromBody]UserDto user)
         {
-            System.Diagnostics.Debug.WriteLine("CONTROLLER");
             _userSrv.createUser(user);
         }
 
