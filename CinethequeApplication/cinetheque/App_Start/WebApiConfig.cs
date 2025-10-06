@@ -11,6 +11,9 @@ namespace cinetheque
         {
             config.MapHttpAttributeRoutes();
 
+            // Active CORS globalement
+            config.EnableCors();
+
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",

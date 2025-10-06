@@ -53,8 +53,14 @@ namespace cinetheque.Models
             return userFound;
         }
 
-        public void InsertUser(User user)
+        public void InsertUser(UserDto user)
         {
+            if (user == null)
+            {
+                Console.WriteLine("L'objet en paramètre est NULL");
+                return;
+            }
+
             string connectionString = @"Data Source=LAPTOP-R6OUBGEG;
                                 Initial Catalog=cinethequeDB;
                                 User ID=Marvin;
@@ -94,17 +100,31 @@ namespace cinetheque.Models
                     }
                 }
 
+                string insertAuth = "INSERT INTO utilisateurs (login, mdp, role) VALUES(@login, @mdp, @roles)";
+                using (SqlCommand insertCmd = new SqlCommand(insertAuth, connection))
+                {
+                    //string hashedPwd = BCrypt.Net.BCrypt.HashPassword(user.getPwd);
+
+                    insertCmd.Parameters.AddWithValue("@login", user.getLogin);
+                    insertCmd.Parameters.AddWithValue("@mdp", user.getPwd);
+                    insertCmd.Parameters.AddWithValue("@roles", user.getRole ?? "utilisateur");
+
+                    insertCmd.ExecuteNonQuery();
+                    Console.WriteLine("Utilisateur ajouté avec succès !");
+                }
+
                 // Si on arrive ici, le login n’existe pas → on crée le nouvel utilisateur
-                string insertSql = "INSERT INTO utilisateurs (login, mdp, role) VALUES (@login, @mdp, @role)";
+                string insertSql = "INSERT INTO utilisateur_infos (nom, prenom, adresse, utilisateur_id) VALUES (@nom, @prenom,@adresse, @userId)";
 
                 using (SqlCommand insertCmd = new SqlCommand(insertSql, connection))
                 {
-                    insertCmd.Parameters.AddWithValue("@login", user.getLogin);
-                    insertCmd.Parameters.AddWithValue("@mdp", user.getPwd);
-                    insertCmd.Parameters.AddWithValue("@role", user.getRole ?? "utilisateur");
-                    
+                    insertCmd.Parameters.AddWithValue("@nom", user.getUserName);
+                    insertCmd.Parameters.AddWithValue("@prenom", user.getUserFirstName);
+                    insertCmd.Parameters.AddWithValue("@adresse", user.getUserAdress);
+                    insertCmd.Parameters.AddWithValue("@userId", user.getUserId);
+
                     insertCmd.ExecuteNonQuery();
-                    Console.WriteLine("Utilisateur ajouté avec succès !");
+                    Console.WriteLine("Utilisateur info ajouté avec succès !");
                 }
             }
         }

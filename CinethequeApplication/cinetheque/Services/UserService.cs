@@ -10,7 +10,7 @@ namespace cinetheque.Services
     public interface IUserService
 
     {
-        void createUser(User user);
+        void createUser(UserDto user);
         bool login(User user);
     }
 }

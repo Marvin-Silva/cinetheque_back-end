@@ -8,7 +8,7 @@ namespace cinetheque.Services
 {
     public class UserServiceImpl : IUserService
     {
-        public void createUser(User user)
+        public void createUser(UserDto user)
         {
             new UserDAO().InsertUser(user);
         }

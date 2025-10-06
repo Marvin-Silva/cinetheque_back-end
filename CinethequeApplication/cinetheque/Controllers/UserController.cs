@@ -20,8 +20,9 @@ namespace cinetheque.Controllers
 
         [Route("api/v1/create/user")]
         [HttpPost]
-        public void createUser([FromBody]User user)
+        public void CreateUser([FromBody]UserDto user)
         {
+            System.Diagnostics.Debug.WriteLine("CONTROLLER");
             _userSrv.createUser(user);
         }
 
