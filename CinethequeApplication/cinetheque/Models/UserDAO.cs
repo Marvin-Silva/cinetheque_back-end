@@ -8,6 +8,51 @@ namespace cinetheque.Models
 {
     public class UserDAO
     {
+        public bool SelectUser(User user)
+        {
+            string connectionString = @"Data Source=LAPTOP-R6OUBGEG;
+                                Initial Catalog=cinethequeDB;
+                                User ID=Marvin;
+                                Password=Soleil.123;
+                                Encrypt=True;
+                                TrustServerCertificate=True;";
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+
+            string sql = "SELECT login, mdp FROM utilisateurs";
+            SqlCommand command = new SqlCommand(sql, connection);
+
+            SqlDataReader reader = command.ExecuteReader();
+
+            bool userFound = false;
+
+            while (reader.Read())
+            {
+                string dbLogin = reader.GetString(0);
+                string dbPwd = reader.GetString(1);  
+
+                if (dbLogin.Equals(user.getLogin) && dbPwd.Equals(user.getPwd))
+                {
+                    userFound = true;
+                    break;
+                }
+            }
+
+            reader.Close();
+            connection.Close();
+
+            if (userFound)
+            {
+                Console.WriteLine("Utilisateur trouvé !");
+            }
+            else
+            {
+                Console.WriteLine("Login ou mot de passe incorrect.");
+            }
+            return userFound;
+        }
+
         public void InsertUser(User user)
         {
             string connectionString = @"Data Source=LAPTOP-R6OUBGEG;

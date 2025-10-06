@@ -24,5 +24,12 @@ namespace cinetheque.Controllers
         {
             _userSrv.createUser(user);
         }
+
+        [Route("api/v1/login/user")]
+        [HttpGet]
+        public bool loginUser([FromBody]User user)
+        {
+            return _userSrv.login(user);
+        }
     }
 }

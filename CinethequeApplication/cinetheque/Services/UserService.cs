@@ -11,5 +11,6 @@ namespace cinetheque.Services
 
     {
         void createUser(User user);
+        bool login(User user);
     }
 }

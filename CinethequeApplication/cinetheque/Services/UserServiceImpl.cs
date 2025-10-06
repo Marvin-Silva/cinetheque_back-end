@@ -12,5 +12,10 @@ namespace cinetheque.Services
         {
             new UserDAO().InsertUser(user);
         }
+
+        public bool login(User user)
+        {
+            return new UserDAO().SelectUser(user);
+        }
     }
 }
