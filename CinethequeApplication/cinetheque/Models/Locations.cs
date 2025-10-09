@@ -28,6 +28,5 @@ namespace cinetheque.Models
 
         [JsonProperty("utilisateur_id")]
         public int getUserId { get; set; }
-
     }
 }

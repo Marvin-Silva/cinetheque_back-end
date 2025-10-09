@@ -164,12 +164,15 @@
     </Compile>
     <Compile Include="Models\Articles.cs" />
     <Compile Include="Models\Categories.cs" />
+    <Compile Include="Models\DAO\LocationDao.cs" />
     <Compile Include="Models\Locations.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\DAO\UserDAO.cs" />
     <Compile Include="Models\DTO\UserDto.cs" />
     <Compile Include="Models\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ILocationService.cs" />
+    <Compile Include="Services\LocationService.cs" />
     <Compile Include="Services\UserService.cs" />
     <Compile Include="Services\UserServiceImpl.cs" />
   </ItemGroup>

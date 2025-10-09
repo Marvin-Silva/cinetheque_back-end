@@ -1,5 +1,6 @@
 ﻿using cinetheque.Models;
 using cinetheque.Services;
+using System.Collections.Generic;
 using System.Web;
 using System.Web.Http;
 
@@ -9,10 +10,12 @@ namespace cinetheque.Controllers
     public class UserController : ApiController
     {
         private IUserService _userSrv;
+        private ILocationService _locationSrv;
 
         public UserController()
         {
             _userSrv = new UserServiceImpl();
+            _locationSrv = new LocationService();
         }
 
         [Route("create/user")]
@@ -39,7 +42,8 @@ namespace cinetheque.Controllers
             if (isConnected)
             {
                 var session = HttpContext.Current.Session;
-                session["username"] = userLogin.getLogin;
+                session["login"] = userLogin.getLogin;
+                session["id"] = userLogin.Id;
                 session["isConnected"] = isConnected;
                 return isConnected;
             }
@@ -62,6 +66,14 @@ namespace cinetheque.Controllers
         public UserInfo getUserInfo([FromUri] int id)
         {
             return _userSrv.getUserInfo(id);
+        }
+
+        [Route("post/rent/articles")]
+        [HttpPost]
+        public int rentArticles(List<Articles> articles)
+        {
+           return _locationSrv.rentArticles(articles);
+
         }
     }
 }

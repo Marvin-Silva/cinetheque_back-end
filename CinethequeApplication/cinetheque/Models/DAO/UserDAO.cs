@@ -57,8 +57,11 @@ namespace cinetheque.Models
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
 
-            string sql = "SELECT login, mdp FROM utilisateurs";
+            string sql = "SELECT id, login, mdp FROM utilisateurs WHERE login = @login AND mdp = @mdp";
             SqlCommand command = new SqlCommand(sql, connection);
+
+            command.Parameters.AddWithValue("@login", user.getLogin);
+            command.Parameters.AddWithValue("@mdp", user.getPwd);
 
             SqlDataReader reader = command.ExecuteReader();
 
@@ -66,13 +69,17 @@ namespace cinetheque.Models
 
             while (reader.Read())
             {
-                string dbLogin = reader.GetString(0);
-                string dbPwd = reader.GetString(1);  
+                int dbId = reader.GetInt32(0);
+                string dbLogin = reader.GetString(1);
+                string dbPwd = reader.GetString(2);
 
                 if (dbLogin.Equals(user.getLogin) && dbPwd.Equals(user.getPwd))
                 {
+                    user.Id =(int) reader["id"];
+                    user.getLogin =(string) reader["login"];
+                    user.getPwd = (string) reader["mdp"];
+                    
                     userFound = true;
-                    break;
                 }
             }
 
