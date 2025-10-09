@@ -18,8 +18,9 @@ namespace cinetheque.Models
         public string getRole { get; set; }
 
         public User() { }
-        public User(string login, string password, string role)
+        public User(int id, string login, string password, string role)
         {
+            Id = id;
             getLogin = login;
             getPwd = password;
             getRole = role;

@@ -1,10 +1,6 @@
 ﻿using cinetheque.Models;
 using cinetheque.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 
 namespace cinetheque.Controllers
@@ -27,10 +23,38 @@ namespace cinetheque.Controllers
         }
 
         [Route("login/user")]
-        [HttpGet]
+        [HttpPost]
         public bool loginUser([FromBody]User user)
         {
-            return _userSrv.login(user);
+            bool isConnected = false;
+            User userLogin = new User();
+
+            if (user != null)
+            {
+                userLogin = user;
+            }
+
+            isConnected = _userSrv.login(userLogin);
+
+            if (isConnected)
+            {
+                var session = HttpContext.Current.Session;
+                session["username"] = userLogin.getLogin;
+                session["isConnected"] = isConnected;
+                return isConnected;
+            }
+            return isConnected;
+        }
+
+        [Route("logout/user")]
+        [HttpPost]
+        public void Logout()
+        {
+            if (HttpContext.Current.Session != null)
+            {
+                HttpContext.Current.Session.Clear();
+                HttpContext.Current.Session.Abandon();
+            }
         }
 
         [Route("get/user/info")]
