@@ -12,12 +12,7 @@ namespace cinetheque.Models
         public UserInfo SelectUserInfo(int id)
         {
             UserInfo user = new UserInfo();
-            string connectionString = @"Data Source=LAPTOP-R6OUBGEG;
-                                Initial Catalog=cinethequeDB;
-                                User ID=Marvin;
-                                Password=Soleil.123;
-                                Encrypt=True;
-                                TrustServerCertificate=True;";
+            string connectionString = @"Data Source=cinesrv.database.windows.net;Initial Catalog=cinethequeBDD;User ID=test;Password=cine1234!;Encrypt=True;TrustServerCertificate=True;";
 
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
@@ -47,12 +42,7 @@ namespace cinetheque.Models
 
         public bool SelectUser(User user)
         {
-            string connectionString = @"Data Source=LAPTOP-R6OUBGEG;
-                                Initial Catalog=cinethequeDB;
-                                User ID=Marvin;
-                                Password=Soleil.123;
-                                Encrypt=True;
-                                TrustServerCertificate=True;";
+            string connectionString = @"Data Source=cinesrv.database.windows.net;Initial Catalog=cinethequeBDD;User ID=test;Password=cine1234!;Encrypt=True;TrustServerCertificate=True;";
 
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
@@ -105,12 +95,7 @@ namespace cinetheque.Models
                 return;
             }
 
-            string connectionString = @"Data Source=LAPTOP-R6OUBGEG;
-                                Initial Catalog=cinethequeDB;
-                                User ID=Marvin;
-                                Password=Soleil.123;
-                                Encrypt=True;
-                                TrustServerCertificate=True;";
+            string connectionString = @"Data Source=cinesrv.database.windows.net;Initial Catalog=cinethequeBDD;User ID=test;Password=cine1234!;Encrypt=True;TrustServerCertificate=True;";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {

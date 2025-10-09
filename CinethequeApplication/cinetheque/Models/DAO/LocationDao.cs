@@ -13,12 +13,7 @@ namespace cinetheque.Models.DAO
             int resultFirstRequest = 0;
             int resultSecondRequest = 0;
 
-            string connectionString = @"Data Source=LAPTOP-R6OUBGEG;
-                                Initial Catalog=cinethequeDB;
-                                User ID=Marvin;
-                                Password=Soleil.123;
-                                Encrypt=True;
-                                TrustServerCertificate=True;";
+            string connectionString = @"Data Source=cinesrv.database.windows.net;Initial Catalog=cinethequeBDD;User ID=test;Password=cine1234!;Encrypt=True;TrustServerCertificate=True;";
 
             SqlConnection connection = new SqlConnection(connectionString);
             
