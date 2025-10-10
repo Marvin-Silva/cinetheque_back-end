@@ -60,5 +60,38 @@ namespace cinetheque.Models.DAO
                 return 0;
             }
         }
+        public List<Locations> selectLocationById(int id)
+        {
+            List<Locations> locations = new List<Locations>();
+            string connectionString = @"Data Source=LAPTOP-R6OUBGEG;Initial Catalog=cinethequeDB;User ID=marvin;Password=Soleil.123";
+            string sql = "SELECT * FROM locations WHERE utilisateur_id=@id"; ;
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+
+            SqlCommand command = new SqlCommand(sql, connection);
+
+            command.Parameters.AddWithValue("@id", id);
+            SqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Locations location = new Locations
+                {
+                    getId = Convert.ToInt32(reader["id"]),
+                    getTotalPrice = (double)reader["prix_total"],
+                    getQuantity = Convert.ToInt32(reader["qte_articles"]),
+                    getStartDate = reader["date_debut"]!= DBNull.Value ? Convert.ToDateTime(reader["date_location"]): DateTime.MinValue,
+                    getEndDate = reader["date_fin"] != DBNull.Value ? Convert.ToDateTime(reader["date_location"]) : DateTime.MinValue,
+                    getArticleId = Convert.ToInt32(reader["article_id"]),
+                    getUserId = Convert.ToInt32(reader["utilisateur_id"])
+                };
+                locations.Add(location);
+                connection.Close();
+
+                return locations;
+            }
+            return locations;
+        }
     }
 }

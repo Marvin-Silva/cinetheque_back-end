@@ -71,5 +71,39 @@ namespace cinetheque.Models.DAO
             }
             return article;
         }
+
+        public List<Articles> selectArticleByUserId(int id)
+        {
+            List<Articles> articles = new List<Articles>();
+            string connectionString = @"Data Source=LAPTOP-R6OUBGEG;Initial Catalog=cinethequeDB;User ID=marvin;Password=Soleil.123";
+
+            string sql = @"SELECT a.* FROM locations l INNER JOIN articles a ON l.article_id = a.id WHERE l.utilisateur_id = @id";
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+
+            SqlCommand command = new SqlCommand(sql, connection);
+
+            command.Parameters.AddWithValue("@id", id);
+            SqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Articles article = new Articles
+                {
+                    getId = (int)reader["id"],
+                    getPrice = (double)reader["prix"],
+                    getName = reader["nom"].ToString(),
+                    getCatId = (int)reader["categorie_id"],
+                    getDescription = reader["description"].ToString(),
+                    getTotalQty = (int)reader["qte_totale"],
+                    getDispoQty = (int)reader["qte_dispo"]
+                };
+                articles.Add(article);
+            }
+            connection.Close();
+
+            return articles;
+        }
     }
 }

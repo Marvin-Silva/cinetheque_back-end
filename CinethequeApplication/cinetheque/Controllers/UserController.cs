@@ -12,12 +12,11 @@ namespace cinetheque.Controllers
         private IUserService _userSrv;
         private ILocationService _locationSrv;
 
-        public UserController()
+        UserController()
         {
-            _userSrv = new UserServiceImpl();
-            _locationSrv = new LocationService();
+            this._userSrv = new UserServiceImpl();
+            this._locationSrv = new LocationService();
         }
-
         [Route("create/user")]
         [HttpPost]
         public void CreateUser([FromBody]UserDto user)
@@ -66,6 +65,13 @@ namespace cinetheque.Controllers
         public UserInfo getUserInfo([FromUri] int id)
         {
             return _userSrv.getUserInfo(id);
+        }
+
+        [Route("get/user/article/list/{id}")]
+        [HttpGet]
+        public List<Articles> getUserLocations([FromUri] int id)
+        {
+            return this._userSrv.getArticleList(id);
         }
 
         [Route("post/rent/articles")]

@@ -13,9 +13,10 @@ namespace cinetheque.Controllers
     public class ArticleController : ApiController
     {
         private IArticleService _articleSrv;
+
         ArticleController()
         {
-            _articleSrv = new ArticleService();
+            this._articleSrv = new ArticleService();
         }
 
         [Route("get/list")]

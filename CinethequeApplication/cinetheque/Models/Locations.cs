@@ -9,7 +9,7 @@ namespace cinetheque.Models
     public class Locations
     {
         [JsonProperty("id")]
-        public int geId { get; set; }
+        public int getId { get; set; }
 
         [JsonProperty("prix_total")]
         public double getTotalPrice { get; set; }

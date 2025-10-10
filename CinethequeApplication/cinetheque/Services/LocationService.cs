@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using cinetheque.Models;
+using cinetheque.Models.DAO;
 
 namespace cinetheque.Services
 {
     public class LocationService : ILocationService
     {
+        public List<Locations> getUserLocations(int id)
+        {
+                return new LocationDao().selectLocationById(id);
+        }
+
         public int rentArticles(List<Articles> articles)
         {
             int requestResult = 0;
