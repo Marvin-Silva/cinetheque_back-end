@@ -82,8 +82,8 @@ namespace cinetheque.Models.DAO
                     getId = Convert.ToInt32(reader["id"]),
                     getTotalPrice = (double)reader["prix_total"],
                     getQuantity = Convert.ToInt32(reader["qte_articles"]),
-                    getStartDate = reader["date_debut"]!= DBNull.Value ? Convert.ToDateTime(reader["date_location"]): DateTime.MinValue,
-                    getEndDate = reader["date_fin"] != DBNull.Value ? Convert.ToDateTime(reader["date_location"]) : DateTime.MinValue,
+                    getStartDate = reader["date_debut"]!= DBNull.Value ? Convert.ToDateTime(reader["date_debut"]): DateTime.MinValue,
+                    getEndDate = reader["date_fin"] != DBNull.Value ? Convert.ToDateTime(reader["date_fin"]) : DateTime.MinValue,
                     getArticleId = Convert.ToInt32(reader["article_id"]),
                     getUserId = Convert.ToInt32(reader["utilisateur_id"])
                 };
