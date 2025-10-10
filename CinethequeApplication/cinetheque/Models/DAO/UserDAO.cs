@@ -95,10 +95,10 @@ namespace cinetheque.Models
                 return;
             }
 
-            //string connectionString = @"Data Source=cinesrv.database.windows.net;Initial Catalog=cinethequeBDD;User ID=test;Password=cine1234!;Encrypt=True;TrustServerCertificate=True;";
-            string connectionString = @"Data Source=LAPTOP-R6OUBGEG;Initial Catalog=cinethequeDB;User ID=marvin;Password=Soleil.123";
+            string connectionString = @"Data Source=cinesrv.database.windows.net;Initial Catalog=cinethequeBDD;User ID=test;Password=cine1234!;Encrypt=True;TrustServerCertificate=True;";
+            //string connectionString = @"Data Source=LAPTOP-R6OUBGEG;Initial Catalog=cinethequeDB;User ID=marvin;Password=Soleil.123";
 
-                SqlConnection connection = new SqlConnection(connectionString);
+            SqlConnection connection = new SqlConnection(connectionString);
             
                 connection.Open();
 
@@ -131,10 +131,6 @@ namespace cinetheque.Models
                         Console.WriteLine("Ce login existe déjà, création refusée !");
                         return;
                     }
-
-
-                //string insertAuth = "INSERT INTO utilisateurs u (login, mdp, role) VALUES(@login, @mdp, @roles)," +
-                //    "utilisateur_infos ui (nom, prenom, adresse, utilisateur_id) VALUES(@nom, @prenom, @adresse, @utilisateur_id)"; ;
 
                 string insertUser = @"INSERT INTO utilisateurs (login, mdp, role) VALUES (@login, @mdp, @roles); SELECT SCOPE_IDENTITY();"; // récupère l'ID généré
 
