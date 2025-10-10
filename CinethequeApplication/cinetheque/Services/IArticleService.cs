@@ -1,4 +1,5 @@
 ﻿using cinetheque.Models;
+using cinetheque.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace cinetheque.Services
 {
     interface IArticleService
     {
-        List<Articles> getArticles();
+        List<ArticleDto> getArticles();
         Articles getArticleById(int id);
     }
 }

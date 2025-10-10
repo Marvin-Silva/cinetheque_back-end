@@ -1,4 +1,5 @@
-﻿using System;
+﻿using cinetheque.Models.DTO;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -8,11 +9,14 @@ namespace cinetheque.Models.DAO
 {
     public class ArticleDao
     {
-     public List<Articles> selectAll() { 
-        List<Articles> articles = new List<Articles>();
-        string connectionString = @"Data Source=cinesrv.database.windows.net;Initial Catalog=cinethequeBDD;User ID=test;Password=cine1234!;Encrypt=True;TrustServerCertificate=True;";
+     public List<ArticleDto> selectAll() { 
+        List<ArticleDto> articles = new List<ArticleDto>();
+            string connectionString = @"Data Source=cinesrv.database.windows.net;Initial Catalog=cinethequeBDD;User ID=test;Password=cine1234!;Encrypt=True;TrustServerCertificate=True;";
+            //string connectionString = @"Data Source=LAPTOP-R6OUBGEG;Initial Catalog=cinethequeDB;User ID=marvin;Password=Soleil.123";
 
-        string sql = "SELECT * FROM Articles";
+            string sql = @"SELECT a.*, c.categorie
+                   FROM articles a 
+                   INNER JOIN categories c ON a.categorie_id = c.id";
 
         SqlConnection connection = new SqlConnection(connectionString);
 
@@ -22,18 +26,23 @@ namespace cinetheque.Models.DAO
 
         while (reader.Read())
         {
-            Articles article = new Articles
-            {
-                getId = (int)reader["id"],
-                getPrice = (double)reader["prix"],
-                getName = reader["nom"].ToString(),
-                getCatId = (int)reader["categorie_id"],
-                getDescription = reader["description"].ToString(),
-                getTotalQty = (int)reader["qte_totale"],
-                getDispoQty = (int)reader["qte_dispo"]
-            };
 
-            articles.Add(article);    
+                ArticleDto article = new ArticleDto
+                {
+                    getId = (int)reader["id"],
+                    getName = reader["nom"].ToString(),
+                    getPrice = Convert.ToDouble(reader["prix"]),
+                    getDescription = reader["description"].ToString(),
+                    getTotalQty = (int)reader["qte_totale"],
+                    getDispoQty = (int)reader["qte_dispo"],
+                    
+                    getCatId = new Category {
+                        Id = (int)reader["id"],
+                        CategoryName = (string)reader["categorie"]
+                    }
+                };
+
+                articles.Add(article);    
         }
             return articles;
         }

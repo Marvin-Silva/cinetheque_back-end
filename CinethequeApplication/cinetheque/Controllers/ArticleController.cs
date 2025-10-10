@@ -1,4 +1,5 @@
 ﻿using cinetheque.Models;
+using cinetheque.Models.DTO;
 using cinetheque.Services;
 using System;
 using System.Collections.Generic;
@@ -6,9 +7,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace cinetheque.Controllers
 {
+    [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
     [RoutePrefix("api/v1")]
     public class ArticleController : ApiController
     {
@@ -21,7 +24,7 @@ namespace cinetheque.Controllers
 
         [Route("get/list")]
         [HttpGet]
-        public List<Articles> articles()
+        public List<ArticleDto> articles()
         {
             return _articleSrv.getArticles();
         }

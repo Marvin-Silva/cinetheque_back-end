@@ -3,9 +3,11 @@ using cinetheque.Services;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace cinetheque.Controllers
 {
+    [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
     [RoutePrefix("api/v1")]
     public class UserController : ApiController
     {

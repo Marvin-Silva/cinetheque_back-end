@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using cinetheque.Models;
 using cinetheque.Models.DAO;
+using cinetheque.Models.DTO;
 
 namespace cinetheque.Services
 {
@@ -21,7 +22,7 @@ namespace cinetheque.Services
             return new ArticleDao().selectById(id);
         }
 
-        public List<Articles> getArticles()
+        public List<ArticleDto> getArticles()
         {
             return new ArticleDao().selectAll();
         }
