@@ -60,7 +60,7 @@ namespace cinetheque.Controllers
             }
         }
 
-        [Route("get/user/info")]
+        [Route("get/user/info/{id}")]
         [HttpGet]
         public UserInfo getUserInfo([FromUri] int id)
         {
