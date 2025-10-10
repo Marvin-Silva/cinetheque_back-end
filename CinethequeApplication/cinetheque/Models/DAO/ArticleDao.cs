@@ -75,7 +75,8 @@ namespace cinetheque.Models.DAO
         public List<Articles> selectArticleByUserId(int id)
         {
             List<Articles> articles = new List<Articles>();
-            string connectionString = @"Data Source=LAPTOP-R6OUBGEG;Initial Catalog=cinethequeDB;User ID=marvin;Password=Soleil.123";
+            //string connectionString = @"Data Source=LAPTOP-R6OUBGEG;Initial Catalog=cinethequeDB;User ID=marvin;Password=Soleil.123";
+            string connectionString = @"Data Source=cinesrv.database.windows.net;Initial Catalog=cinethequeBDD;User ID=test;Password=cine1234!;Encrypt=True;TrustServerCertificate=True;";
 
             string sql = @"SELECT a.* FROM locations l INNER JOIN articles a ON l.article_id = a.id WHERE l.utilisateur_id = @id";
 

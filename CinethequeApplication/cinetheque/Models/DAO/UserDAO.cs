@@ -12,7 +12,7 @@ namespace cinetheque.Models
         public UserInfo SelectUserInfo(int id)
         {
             UserInfo user = new UserInfo();
-            string connectionString = @"Data Source=LAPTOP-R6OUBGEG;Initial Catalog=cinethequeDB;User ID=marvin;Password=Soleil.123";
+            string connectionString = @"Data Source=cinesrv.database.windows.net;Initial Catalog=cinethequeBDD;User ID=test;Password=cine1234!;Encrypt=True;TrustServerCertificate=True;";
 
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
@@ -95,16 +95,20 @@ namespace cinetheque.Models
                 return;
             }
 
-            string connectionString = @"Data Source=cinesrv.database.windows.net;Initial Catalog=cinethequeBDD;User ID=test;Password=cine1234!;Encrypt=True;TrustServerCertificate=True;";
+            //string connectionString = @"Data Source=cinesrv.database.windows.net;Initial Catalog=cinethequeBDD;User ID=test;Password=cine1234!;Encrypt=True;TrustServerCertificate=True;";
+            string connectionString = @"Data Source=LAPTOP-R6OUBGEG;Initial Catalog=cinethequeDB;User ID=marvin;Password=Soleil.123";
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
+                SqlConnection connection = new SqlConnection(connectionString);
+            
                 connection.Open();
 
-                string sql = "SELECT login, mdp FROM utilisateurs";
+                string sql = "SELECT login, mdp FROM utilisateurs WHERE login=@userDtoLogin AND mdp=@userDtoMdp"; ;
 
-                using (SqlCommand command = new SqlCommand(sql, connection))
-                using (SqlDataReader reader = command.ExecuteReader())
+                SqlCommand command = new SqlCommand(sql, connection);
+                command.Parameters.AddWithValue("userDtoLogin", user.getLogin);
+                command.Parameters.AddWithValue("userDtoMdp", user.getPwd);
+
+                SqlDataReader reader = command.ExecuteReader();
                 {
                     bool loginExiste = false;
 
@@ -127,34 +131,33 @@ namespace cinetheque.Models
                         Console.WriteLine("Ce login existe déjà, création refusée !");
                         return;
                     }
-                }
 
-                string insertAuth = "INSERT INTO utilisateurs (login, mdp, role) VALUES(@login, @mdp, @roles)";
-                using (SqlCommand insertCmd = new SqlCommand(insertAuth, connection))
-                {
-                    //string hashedPwd = BCrypt.Net.BCrypt.HashPassword(user.getPwd);
 
-                    insertCmd.Parameters.AddWithValue("@login", user.getLogin);
-                    insertCmd.Parameters.AddWithValue("@mdp", user.getPwd);
-                    insertCmd.Parameters.AddWithValue("@roles", user.getRole ?? "utilisateur");
+                //string insertAuth = "INSERT INTO utilisateurs u (login, mdp, role) VALUES(@login, @mdp, @roles)," +
+                //    "utilisateur_infos ui (nom, prenom, adresse, utilisateur_id) VALUES(@nom, @prenom, @adresse, @utilisateur_id)"; ;
 
-                    insertCmd.ExecuteNonQuery();
-                    Console.WriteLine("Utilisateur ajouté avec succès !");
-                }
+                string insertUser = @"INSERT INTO utilisateurs (login, mdp, role) VALUES (@login, @mdp, @roles); SELECT SCOPE_IDENTITY();"; // récupère l'ID généré
 
-                // Si on arrive ici, le login n’existe pas → on crée le nouvel utilisateur
-                string insertSql = "INSERT INTO utilisateur_infos (nom, prenom, adresse, utilisateur_id) VALUES (@nom, @prenom,@adresse, @userId)";
+                string insertInfos = @"INSERT INTO utilisateur_infos (nom, prenom, adresse, utilisateur_id) VALUES (@nom, @prenom, @adresse, @utilisateur_id)";
 
-                using (SqlCommand insertCmd = new SqlCommand(insertSql, connection))
-                {
-                    insertCmd.Parameters.AddWithValue("@nom", user.getUserName);
-                    insertCmd.Parameters.AddWithValue("@prenom", user.getUserFirstName);
-                    insertCmd.Parameters.AddWithValue("@adresse", user.getUserAdress);
-                    insertCmd.Parameters.AddWithValue("@userId", user.getUserId);
+                //string hashedPwd = BCrypt.Net.BCrypt.HashPassword(user.getPwd);
 
-                    insertCmd.ExecuteNonQuery();
-                    Console.WriteLine("Utilisateur info ajouté avec succès !");
-                }
+                // 1. Insertion dans utilisateurs
+                SqlCommand cmdUser = new SqlCommand(insertUser, connection);
+                cmdUser.Parameters.AddWithValue("@login", user.getLogin);
+                cmdUser.Parameters.AddWithValue("@mdp", user.getPwd);
+                cmdUser.Parameters.AddWithValue("@roles", user.getRole);
+                int utilisateurId = Convert.ToInt32(cmdUser.ExecuteScalar());
+
+                // 2. Insertion dans utilisateur_infos
+                SqlCommand cmdInfos = new SqlCommand(insertInfos, connection);
+                cmdInfos.Parameters.AddWithValue("@nom", user.getUserName);
+                cmdInfos.Parameters.AddWithValue("@prenom", user.getUserFirstName);
+                cmdInfos.Parameters.AddWithValue("@adresse", user.getUserAdress);
+                cmdInfos.Parameters.AddWithValue("@utilisateur_id", utilisateurId);
+                cmdInfos.ExecuteNonQuery();
+
+                connection.Close();
             }
         }
 
