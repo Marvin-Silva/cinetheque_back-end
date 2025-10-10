@@ -169,6 +169,7 @@
     <Compile Include="Models\DAO\ArticleDao.cs" />
     <Compile Include="Models\DAO\LocationDao.cs" />
     <Compile Include="Models\DTO\ArticleDto.cs" />
+    <Compile Include="Models\DTO\LocationDto.cs" />
     <Compile Include="Models\Locations.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\DAO\UserDAO.cs" />

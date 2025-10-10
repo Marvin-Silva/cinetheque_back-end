@@ -4,14 +4,19 @@ using System.Linq;
 using System.Web;
 using cinetheque.Models;
 using cinetheque.Models.DAO;
+using cinetheque.Models.DTO;
 
 namespace cinetheque.Services
 {
     public class LocationService : ILocationService
     {
-        public List<Locations> getUserLocations(int id)
+
+        public List<LocationDto> getUserLocations(int id)
         {
-                return new LocationDao().selectLocationById(id);
+
+            List<LocationDto> locations = new LocationDao().selectLocationById(id);
+
+            return locations;
         }
 
         public int rentArticles(List<Articles> articles)

@@ -1,4 +1,5 @@
 ﻿using cinetheque.Models;
+using cinetheque.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,6 @@ namespace cinetheque.Services
     interface ILocationService
     {
         int rentArticles(List<Articles> article);
+        List<LocationDto> getUserLocations(int id);
     }
 }

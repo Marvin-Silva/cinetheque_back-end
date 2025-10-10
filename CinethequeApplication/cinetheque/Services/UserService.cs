@@ -1,4 +1,5 @@
 ﻿using cinetheque.Models;
+using cinetheque.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,6 @@ namespace cinetheque.Services
         void createUser(UserDto user);
         bool login(User user);
         UserInfo getUserInfo(int id);
-        List<Articles> getArticleList(int id);
+        List<LocationDto> getUserLocations(int id);
     }
 }

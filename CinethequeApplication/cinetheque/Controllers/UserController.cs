@@ -1,4 +1,5 @@
 ﻿using cinetheque.Models;
+using cinetheque.Models.DTO;
 using cinetheque.Services;
 using System.Collections.Generic;
 using System.Web;
@@ -71,9 +72,9 @@ namespace cinetheque.Controllers
 
         [Route("get/user/article/list/{id}")]
         [HttpGet]
-        public List<Articles> getUserLocations([FromUri] int id)
+        public List<LocationDto> getUserLocations([FromUri] int id)
         {
-            return this._userSrv.getArticleList(id);
+            return this._locationSrv.getUserLocations(id);
         }
 
         [Route("post/rent/articles")]

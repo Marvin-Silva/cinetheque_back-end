@@ -4,16 +4,17 @@ using System.Linq;
 using System.Web;
 using cinetheque.Models;
 using cinetheque.Models.DAO;
+using cinetheque.Models.DTO;
 
 namespace cinetheque.Services
 {
     public class UserServiceImpl : IUserService
     {
-        private ArticleService articleSrv;
+        private LocationService locationSrv;
 
         public UserServiceImpl()
         {
-            this.articleSrv = new ArticleService();
+            this.locationSrv = new LocationService();
         }
 
         public void createUser(UserDto user)
@@ -21,9 +22,9 @@ namespace cinetheque.Services
             new UserDAO().InsertUser(user);
         }
 
-        public List<Articles> getArticleList(int id)
+        public List<LocationDto> getUserLocations(int id)
         {
-            return this.articleSrv.getArticleList(id);
+            return this.locationSrv.getUserLocations(id);
         }
 
         public UserInfo getUserInfo(int id)

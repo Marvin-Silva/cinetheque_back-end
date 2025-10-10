@@ -142,7 +142,7 @@ namespace cinetheque.Models
                 SqlCommand cmdUser = new SqlCommand(insertUser, connection);
                 cmdUser.Parameters.AddWithValue("@login", user.getLogin);
                 cmdUser.Parameters.AddWithValue("@mdp", user.getPwd);
-                cmdUser.Parameters.AddWithValue("@roles", user.getRole);
+                cmdUser.Parameters.AddWithValue("@roles", user.getRole ?? "utilisateur");
                 int utilisateurId = Convert.ToInt32(cmdUser.ExecuteScalar());
 
                 // 2. Insertion dans utilisateur_infos

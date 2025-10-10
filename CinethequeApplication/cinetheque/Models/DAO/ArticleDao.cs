@@ -29,14 +29,14 @@ namespace cinetheque.Models.DAO
 
                 ArticleDto article = new ArticleDto
                 {
-                    getId = (int)reader["id"],
-                    getName = reader["nom"].ToString(),
-                    getPrice = Convert.ToDouble(reader["prix"]),
-                    getDescription = reader["description"].ToString(),
-                    getTotalQty = (int)reader["qte_totale"],
-                    getDispoQty = (int)reader["qte_dispo"],
+                    Id = (int)reader["id"],
+                    Name = reader["nom"].ToString(),
+                    Price = Convert.ToDouble(reader["prix"]),
+                    Description = reader["description"].ToString(),
+                    TotalQty = (int)reader["qte_totale"],
+                    DispoQty = (int)reader["qte_dispo"],
                     
-                    getCatId = new Category {
+                    Category = new Category {
                         Id = (int)reader["id"],
                         CategoryName = (string)reader["categorie"]
                     }
@@ -81,39 +81,39 @@ namespace cinetheque.Models.DAO
             return article;
         }
 
-        public List<Articles> selectArticleByUserId(int id)
-        {
-            List<Articles> articles = new List<Articles>();
-            //string connectionString = @"Data Source=LAPTOP-R6OUBGEG;Initial Catalog=cinethequeDB;User ID=marvin;Password=Soleil.123";
-            string connectionString = @"Data Source=cinesrv.database.windows.net;Initial Catalog=cinethequeBDD;User ID=test;Password=cine1234!;Encrypt=True;TrustServerCertificate=True;";
+        //public List<Articles> selectArticleByUserId(int id)
+        //{
+        //    List<Articles> articles = new List<Articles>();
+        //    //string connectionString = @"Data Source=LAPTOP-R6OUBGEG;Initial Catalog=cinethequeDB;User ID=marvin;Password=Soleil.123";
+        //    string connectionString = @"Data Source=cinesrv.database.windows.net;Initial Catalog=cinethequeBDD;User ID=test;Password=cine1234!;Encrypt=True;TrustServerCertificate=True;";
 
-            string sql = @"SELECT a.* FROM locations l INNER JOIN articles a ON l.article_id = a.id WHERE l.utilisateur_id = @id";
+        //    string sql = @"SELECT a.* FROM locations l INNER JOIN articles a ON l.article_id = a.id WHERE l.utilisateur_id = @id";
 
-            SqlConnection connection = new SqlConnection(connectionString);
-            connection.Open();
+        //    SqlConnection connection = new SqlConnection(connectionString);
+        //    connection.Open();
 
-            SqlCommand command = new SqlCommand(sql, connection);
+        //    SqlCommand command = new SqlCommand(sql, connection);
 
-            command.Parameters.AddWithValue("@id", id);
-            SqlDataReader reader = command.ExecuteReader();
+        //    command.Parameters.AddWithValue("@id", id);
+        //    SqlDataReader reader = command.ExecuteReader();
 
-            while (reader.Read())
-            {
-                Articles article = new Articles
-                {
-                    getId = (int)reader["id"],
-                    getPrice = (double)reader["prix"],
-                    getName = reader["nom"].ToString(),
-                    getCatId = (int)reader["categorie_id"],
-                    getDescription = reader["description"].ToString(),
-                    getTotalQty = (int)reader["qte_totale"],
-                    getDispoQty = (int)reader["qte_dispo"]
-                };
-                articles.Add(article);
-            }
-            connection.Close();
+        //    while (reader.Read())
+        //    {
+        //        Articles article = new Articles
+        //        {
+        //            getId = (int)reader["id"],
+        //            getPrice = (double)reader["prix"],
+        //            getName = reader["nom"].ToString(),
+        //            getCatId = (int)reader["categorie_id"],
+        //            getDescription = reader["description"].ToString(),
+        //            getTotalQty = (int)reader["qte_totale"],
+        //            getDispoQty = (int)reader["qte_dispo"]
+        //        };
+        //        articles.Add(article);
+        //    }
+        //    connection.Close();
 
-            return articles;
-        }
+        //    return articles;
+        //}
     }
 }
