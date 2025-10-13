@@ -19,7 +19,7 @@ namespace cinetheque.Services
             return locations;
         }
 
-        public int rentArticles(List<Articles> articles)
+        public int rentArticles(List<ArticleDto> articles)
         {
             int requestResult = 0;
 
@@ -37,7 +37,7 @@ namespace cinetheque.Services
             {
                 foreach (var article in articles)
                 {
-                    double totalPrice = calculeTotalPrice(articles.Count, article.getPrice);
+                    double totalPrice = calculeTotalPrice(articles.Count, article.Price);
                     int qtyArticles = articles.Count;
 
                     requestResult = new Models.DAO.LocationDao().RentArticle(article, userId, totalPrice, qtyArticles);

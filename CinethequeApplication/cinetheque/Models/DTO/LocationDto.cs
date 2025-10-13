@@ -9,6 +9,7 @@ namespace cinetheque.Models.DTO
     {
         public int Id { get; set; }
         public double TotalPrice { get; set; }
+        public int Quantity { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public ArticleDto Article { get; set; }

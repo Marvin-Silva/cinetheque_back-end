@@ -9,64 +9,78 @@ namespace cinetheque.Models.DAO
 {
     public class LocationDao
     {
-        public int RentArticle(Articles article, int userId, double totalPrice, int qtyArticles)
+        public int RentArticle(ArticleDto article, int userId, double totalPrice, int qtyArticles)
         {
-            int resultFirstRequest = 0;
-            int resultSecondRequest = 0;
+            int result = 0;
 
             string connectionString = @"Data Source=cinesrv.database.windows.net;Initial Catalog=cinethequeBDD;User ID=test;Password=cine1234!;Encrypt=True;TrustServerCertificate=True;";
 
-            SqlConnection connection = new SqlConnection(connectionString);
-            
-            connection.Open();
-            string insertSql = @"Data Source=cinesrv.database.windows.net;Initial Catalog=cinethequeBDD;User ID=test;Password=cine1234!;Encrypt=True;TrustServerCertificate=True;";
-
-            //string insertSql = "INSERT INTO Locations (prix_total, qte_articles, utilisateur_id, article_id, date_debut, date_fin) VALUES (@prixTotal, @qteArticles, @userId, @articleId, @date_debut, @date_fin);";
-            SqlCommand command = new SqlCommand(insertSql, connection);
-
-            Locations location = new Locations();
-
-            location.getUserId = userId;
-            location.getArticleId = article.getId;
-            location.getQuantity = qtyArticles;
-            location.getStartDate = DateTime.Now;
-            location.getEndDate = DateTime.Now.AddMonths(1);
-
-
-            command.Parameters.AddWithValue("@userId", location.getUserId);
-            command.Parameters.AddWithValue("@articleId", location.getArticleId);
-            command.Parameters.AddWithValue("@prixTotal", totalPrice);
-            command.Parameters.AddWithValue("@qteArticles", location.getQuantity);
-            command.Parameters.AddWithValue("@date_debut", location.getStartDate);
-            command.Parameters.AddWithValue("@date_fin", location.getEndDate);
-
-
-            resultFirstRequest = command.ExecuteNonQuery();
-                
-
-            string updateArticle = "UPDATE Articles SET qte_dispo = qte_dispo - 1 WHERE id = @id AND qte_dispo > 0;";
-            SqlCommand commandUpdate = new SqlCommand(updateArticle, connection);
-                
-            commandUpdate.Parameters.AddWithValue("@id", article.getId);
-            resultSecondRequest = commandUpdate.ExecuteNonQuery();
-
-            connection.Close();
-
-            if(resultFirstRequest > 0 && resultSecondRequest > 0)
+            try
             {
-                int finalResult = resultFirstRequest + resultSecondRequest;
-                Console.WriteLine("Location enregistrée avec succès !");
-                return finalResult;
-            }else
-            {
-                return 0;
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    // Vérification que l'article existe
+                    string checkArticleSql = "SELECT COUNT(*) FROM articles WHERE id = @articleId";
+                    using (SqlCommand checkCommand = new SqlCommand(checkArticleSql, connection))
+                    {
+                        checkCommand.Parameters.AddWithValue("@articleId", article.Id);
+                        int articleExists = (int)checkCommand.ExecuteScalar();
+
+                        if (articleExists == 0)
+                        {
+                            throw new Exception("L'article spécifié n'existe pas dans la base de données.");
+                        }
+                    }
+
+                    // Insertion dans Locations
+                    string insertSql = @"INSERT INTO Locations 
+                (prix_total, qte_articles, utilisateur_id, article_id, date_debut, date_fin) 
+                VALUES (@prixTotal, @qteArticles, @userId, @articleId, @date_debut, @date_fin);";
+
+                    using (SqlCommand command = new SqlCommand(insertSql, connection))
+                    {
+                        Locations location = new Locations
+                        {
+                            getUserId = userId,
+                            getArticleId = article.Id,
+                            getQuantity = qtyArticles,
+                            getStartDate = DateTime.Now,
+                            getEndDate = DateTime.Now.AddMonths(1)
+                        };
+
+                        command.Parameters.AddWithValue("@userId", location.getUserId);
+                        command.Parameters.AddWithValue("@articleId", location.getArticleId);
+                        command.Parameters.AddWithValue("@prixTotal", totalPrice);
+                        command.Parameters.AddWithValue("@qteArticles", location.getQuantity);
+                        command.Parameters.AddWithValue("@date_debut", location.getStartDate);
+                        command.Parameters.AddWithValue("@date_fin", location.getEndDate);
+
+                        result = command.ExecuteNonQuery();
+                    }
+                }
             }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erreur SQL : " + ex.Message);
+                // Vous pouvez aussi logger l'erreur ou la relancer
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erreur : " + ex.Message);
+                throw;
+            }
+
+            return result;
         }
+
         public List<LocationDto> selectLocationById(int id)
         {
             List<LocationDto> locations = new List<LocationDto>();
-            //string connectionString = @"Data Source=cinesrv.database.windows.net;Initial Catalog=cinethequeBDD;User ID=test;Password=cine1234!;Encrypt=True;TrustServerCertificate=True;";
-            string connectionString = @"Data Source=LAPTOP-R6OUBGEG;Initial Catalog=cinethequeDB;User ID=marvin;Password=Soleil.123";
+            string connectionString = @"Data Source=cinesrv.database.windows.net;Initial Catalog=cinethequeBDD;User ID=test;Password=cine1234!;Encrypt=True;TrustServerCertificate=True;";
+            //string connectionString = @"Data Source=LAPTOP-R6OUBGEG;Initial Catalog=cinethequeDB;User ID=marvin;Password=Soleil.123";
 
             string sql = @"SELECT l.id AS location_id,
                                     l.prix_total,
@@ -91,7 +105,7 @@ namespace cinetheque.Models.DAO
                                 INNER JOIN articles a ON l.article_id = a.id
                                 LEFT JOIN categories c ON a.categorie_id = c.id
                                 LEFT JOIN utilisateur_infos u ON l.utilisateur_id = u.utilisateur_id
-                                WHERE l.utilisateur_id = 11"; ;
+                                WHERE l.utilisateur_id =@id"; ;
 
 
             SqlConnection connection = new SqlConnection(connectionString);
@@ -110,7 +124,7 @@ namespace cinetheque.Models.DAO
                     TotalPrice = Convert.ToDouble(reader["prix_total"]),
                     StartDate = reader["date_debut"] != DBNull.Value ? Convert.ToDateTime(reader["date_debut"]) : DateTime.MinValue,
                     EndDate = reader["date_fin"] != DBNull.Value ? Convert.ToDateTime(reader["date_fin"]) : DateTime.MinValue,
-
+                    Quantity = Convert.ToInt32(reader["qte_articles"]),
                     Article = new ArticleDto
                     {
                         Id = Convert.ToInt32(reader["article_id"]),

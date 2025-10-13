@@ -43,6 +43,7 @@ namespace cinetheque.Models
         public bool SelectUser(User user)
         {
             string connectionString = @"Data Source=cinesrv.database.windows.net;Initial Catalog=cinethequeBDD;User ID=test;Password=cine1234!;Encrypt=True;TrustServerCertificate=True;";
+            //string connectionString = @"Data Source=LAPTOP-R6OUBGEG;Initial Catalog=cinethequeDB;User ID=marvin;Password=Soleil.123";
 
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
@@ -96,7 +97,6 @@ namespace cinetheque.Models
             }
 
             string connectionString = @"Data Source=cinesrv.database.windows.net;Initial Catalog=cinethequeBDD;User ID=test;Password=cine1234!;Encrypt=True;TrustServerCertificate=True;";
-            //string connectionString = @"Data Source=LAPTOP-R6OUBGEG;Initial Catalog=cinethequeDB;User ID=marvin;Password=Soleil.123";
 
             SqlConnection connection = new SqlConnection(connectionString);
             

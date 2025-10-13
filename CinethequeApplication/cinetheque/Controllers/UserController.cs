@@ -29,10 +29,11 @@ namespace cinetheque.Controllers
 
         [Route("login/user")]
         [HttpPost]
-        public bool loginUser([FromBody]User user)
+        public UserInfo loginUser([FromBody]User user)
         {
             bool isConnected = false;
             User userLogin = new User();
+            UserInfo userInfo = new UserInfo();
 
             if (user != null)
             {
@@ -43,13 +44,14 @@ namespace cinetheque.Controllers
 
             if (isConnected)
             {
+                userInfo = _userSrv.getUserInfo(user.Id);
+
                 var session = HttpContext.Current.Session;
                 session["login"] = userLogin.getLogin;
                 session["id"] = userLogin.Id;
                 session["isConnected"] = isConnected;
-                return isConnected;
             }
-            return isConnected;
+            return userInfo;
         }
 
         [Route("logout/user")]
@@ -79,10 +81,9 @@ namespace cinetheque.Controllers
 
         [Route("post/rent/articles")]
         [HttpPost]
-        public int rentArticles(List<Articles> articles)
+        public int rentArticles(List<ArticleDto> articles)
         {
            return _locationSrv.rentArticles(articles);
-
         }
     }
 }

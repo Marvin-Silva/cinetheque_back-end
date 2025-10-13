@@ -10,7 +10,7 @@ namespace cinetheque.Services
 {
     interface ILocationService
     {
-        int rentArticles(List<Articles> article);
+        int rentArticles(List<ArticleDto> article);
         List<LocationDto> getUserLocations(int id);
     }
 }
